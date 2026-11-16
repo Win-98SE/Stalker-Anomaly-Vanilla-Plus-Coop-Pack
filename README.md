@@ -81,8 +81,4 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [S.T.A.L.K.E.R. Anomaly](https://www.moddb.com/mods/stalker-anomaly) by the Anomaly Developers
 - [Mod Organizer 2](https://github.com/ModOrganizer2/modorganizer)
 
-## For the pack maintainer
-
-`Build-Modpack-Installer.ps1` (run via `Build Modpack Installer.bat` from a `Modpack Tools` folder inside the Anomaly install) reads the MO2 Coop profile, matches each installed file to its original download, and writes the installer zip. `modpack-sources.csv` lists where each mod is downloaded from.
-
 Please don't re-upload the mods themselves.
