@@ -6,20 +6,30 @@ The installer does **not** contain any mods. It downloads every mod from its aut
 
 ## Download
 
-Get the latest `Stalker_Anomaly_VanillaPlus_Coop_Pack_<date>.zip` from the **[Releases](../../releases/latest)** page.
+Get the latest release from the **[Releases](../../releases/latest)** page:
+
+- **`Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe`** - the easy way, a setup window that does everything.
+- `Stalker_Anomaly_VanillaPlus_Coop_Pack_<date>.zip` - the same installer without the window (run `Install Modpack.bat`).
 
 ## Install
 
-You need a fresh **S.T.A.L.K.E.R. Anomaly 1.5.3** install, about 25 GB of free space and Windows 10/11.
+You need Windows 10/11 and about 25 GB of free space (about 55 GB if Setup also downloads Anomaly for you).
 
-1. Launch Anomaly once from its own launcher, reach the main menu, then quit.
-2. Extract the whole zip **into** your Anomaly folder (the one with `AnomalyLauncher.exe`, `bin\` and `db\`).
-3. Double-click **`Install Modpack.bat`** and wait. If ModDB blocks a download, a page opens: download the file it names into your Downloads folder and press Enter.
-4. Start **Stalker Anomaly Vanilla+ Coop Pack** from your desktop, pick *Anomaly (DX11-AVX)* in Mod Organizer and press Run.
+1. Run the Setup `.exe`. It isn't code-signed, so Windows may show "Windows protected your PC": click **More info**, then **Run anyway**.
+2. Pick a folder (an empty one for a new install, not inside Program Files).
+3. Choose where **S.T.A.L.K.E.R. Anomaly 1.5.3** comes from: your **GOG** copy (Anomaly is [free on GOG](https://www.gog.com/en/game/stalker_anomaly)), a **ModDB** download (9.1 GB) into the chosen folder, or another Anomaly folder on your PC.
+4. Wait. If ModDB blocks a download, its page opens in your browser and the download starts by itself; Setup notices the finished file.
+5. Press **Launch Mod Organizer**, pick *Anomaly (DX11-AVX)* and press Run.
 
-Full instructions and troubleshooting are in `README - Modpack Installer.txt` inside the zip.
+Setup speaks **English, Ukrainian and Russian** (you pick on the first screen).
 
-> Everyone playing together must use the **same installer version**: co-op needs identical files on every PC.
+## Updating
+
+When a new release is out, Setup tells you when you open it. Download the new Setup `.exe` and point it at the same folder: it only downloads and reinstalls the mods that changed, removes mods that were dropped from the pack, and keeps everything else.
+
+Full instructions and troubleshooting are in `README - Modpack Installer.txt` (included in the zip, and copied into your Anomaly folder by Setup).
+
+> Everyone playing together must use the **same release**: co-op needs identical files on every PC.
 
 ## Credits
 
