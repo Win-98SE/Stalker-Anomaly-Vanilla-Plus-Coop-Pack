@@ -6,10 +6,7 @@ The installer does **not** contain any mods. It downloads every mod from its aut
 
 ## Download
 
-Get the latest release from the **[Releases](../../releases/latest)** page:
-
-- **`Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe`** - the easy way, a setup window that does everything.
-- `Stalker_Anomaly_VanillaPlus_Coop_Pack_<date>.zip` - the same installer without the window (run `Install Modpack.bat`).
+Get **`Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe`** from the latest release on the **[Releases](../../releases/latest)** page.
 
 ## Install
 
@@ -27,9 +24,28 @@ Setup speaks **English, Ukrainian and Russian** (you pick on the first screen).
 
 When a new release is out, Setup tells you when you open it. Download the new Setup `.exe` and point it at the same folder: it only downloads and reinstalls the mods that changed, removes mods that were dropped from the pack, and keeps everything else.
 
-Full instructions and troubleshooting are in `README - Modpack Installer.txt` (included in the zip, and copied into your Anomaly folder by Setup).
+Full instructions and troubleshooting are in `README - Modpack Installer.txt`, which Setup copies into your Anomaly folder.
 
 > Everyone playing together must use the **same release**: co-op needs identical files on every PC.
+
+## Is it safe?
+
+The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. You don't have to take it on trust - you can check it yourself:
+
+- **Read the source.** Everything Setup does is in this repo, as plain text:
+  - [`SetupGui.cs`](SetupGui.cs) - the Setup window (C#). The `.exe` is compiled from this file.
+  - [`Install-Modpack.ps1`](Install-Modpack.ps1) - the installer itself (PowerShell), which the window runs.
+  - [`Build-Modpack-Installer.ps1`](Build-Modpack-Installer.ps1) - how the pack owner builds the `.exe` from their own Mod Organizer setup, using the C# compiler that comes with Windows.
+  - [`modpack-sources.csv`](modpack-sources.csv) - every download link Setup uses.
+- **Check the file is the original.** Each release lists the SHA-256 fingerprint of the `.exe`. In PowerShell, run `Get-FileHash .\Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe` and compare.
+- **See the virus scan.** Each release links its VirusTotal report (about 70 antivirus engines). New, unsigned home-made programs sometimes get one or two "generic" or "heuristic" flags from smaller engines - that is a guess based on the file being unknown, not a detected virus.
+
+### What Setup does on your PC
+
+- Downloads only from the mod pages listed under Credits, plus S.T.A.L.K.E.R. Anomaly (ModDB), Mod Organizer 2 (GitHub) and 7-Zip (7-zip.org) if you don't have them.
+- Writes only to the folder you choose, a desktop shortcut, and a temporary folder that it deletes when it closes.
+- Doesn't need administrator rights (unless you pick a folder inside Program Files).
+- Sends nothing about you anywhere. Its only other connection is one check with GitHub for a newer release of this pack.
 
 ## Credits
 
