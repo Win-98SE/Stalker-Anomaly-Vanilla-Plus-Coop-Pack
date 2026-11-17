@@ -16,7 +16,10 @@ param(
     [string]$Profile = 'Coop',
     [string[]]$ArchiveDirs = @("$env:USERPROFILE\Downloads"),
     [switch]$SkipLinkCheck,
-    [string]$GitHubRepo = 'Win-98SE/Stalker-Anomaly-Vanilla-Plus-Coop-Pack'   # Setup checks its latest release for updates
+    [string]$GitHubRepo = 'Win-98SE/Stalker-Anomaly-Vanilla-Plus-Coop-Pack',  # Setup checks its latest release for updates
+    # Mods made for this pack (no download exists) - their files ship inside Setup.
+    # Anything NOT listed here that has no original archive still stops the build.
+    [string[]]$OwnMods = @('3DSS Blindsides AEK-971-1P29 Scope Fix')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -304,6 +307,21 @@ foreach ($name in $enabled) {
     $files = @(Get-RelFiles $modDir | Where-Object { $_.Rel -ine 'meta.ini' })
     $instFile = $meta['installationFile']
     if ($instFile) { $instFile = $instFile.Trim().Trim('"') }
+    if ($OwnMods -contains $name) {
+        # the pack's own mod: ship its files; the content hash goes into the recipe so
+        # Setup reinstalls it on friends' PCs whenever these files change
+        $sb = New-Object System.Text.StringBuilder
+        foreach ($f in @($files | Sort-Object Rel)) {
+            [void]$sb.Append($f.Rel).Append('=').Append((Get-FileHash -LiteralPath $f.Full -Algorithm SHA256).Hash).Append(';')
+            Copy-ToOverlay $f.Full "mods/$name/$($f.Rel)"
+        }
+        $sha = [Security.Cryptography.SHA256]::Create()
+        $own = [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($sb.ToString()))).Replace('-', '')
+        $item = [ordered]@{ name = $name; archive = $null; rules = @("own:$own"); hide = @() }
+        [void]$mods.Add($item)
+        Say ("      pack's own mod - {0} file(s) shipped in Setup" -f $files.Count) 'DarkGray'
+        continue
+    }
     $arcPath = Find-Archive $instFile
     if (-not $arcPath) {
         $bytes = ($files | Measure-Object Size -Sum).Sum

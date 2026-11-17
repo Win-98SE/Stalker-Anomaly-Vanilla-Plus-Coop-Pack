@@ -73,6 +73,7 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Mark Switch](https://www.moddb.com/mods/stalker-anomaly/addons/mark-switch) by party_50
 - [Blindside's Weapon Reanimation - Military](https://www.moddb.com/mods/stalker-anomaly/addons/blindsides-weapon-reanimation-and-rebalance-military) by Blindxside
 - [Vanilla Weapons Resmoothed & Relensed](https://www.moddb.com/mods/stalker-anomaly/addons/vanilla-weapons-resmoothed-relensed) by party_50
+- 3DSS Blindsides AEK-971-1P29 Scope Fix - made for this pack. Adds the AEK-971 + 1P29 aim position that 3DSS Blindside's is missing. Its one small file ships inside Setup.
 
 **Audio**
 
