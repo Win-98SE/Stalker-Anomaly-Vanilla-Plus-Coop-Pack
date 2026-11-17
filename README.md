@@ -75,6 +75,17 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Vanilla Weapons Resmoothed & Relensed](https://www.moddb.com/mods/stalker-anomaly/addons/vanilla-weapons-resmoothed-relensed) by party_50
 - 3DSS Blindsides AEK-971-1P29 Scope Fix - made for this pack. Adds the AEK-971 + 1P29 aim position that 3DSS Blindside's is missing. Its one small file ships inside Setup.
 
+**Hands / Item Animations**
+
+- [T.H.A.P. Rework](https://www.moddb.com/mods/stalker-anomaly/addons/thap-rework) by IENCE (based on T.H.A.P. by ICHICROW)
+- [T.H.A.P. Rework Repaired EXO](https://www.moddb.com/mods/stalker-anomaly/addons/thap-rework-repaired-exo) by Makrent
+- [Food, Drug and Drinks Animations (FDDA)](https://www.moddb.com/mods/stalker-anomaly/addons/food-drug-and-drinks-animations-reuploaded) by Feel_Fried
+- [FDDA Enhanced Animations - Food and Drinks](https://www.moddb.com/mods/stalker-anomaly/addons/fdda-enhanced-animations-food-n-drinks) by Mirrowel
+- [FDDA Enhanced Animations Enhanced](https://www.moddb.com/mods/stalker-anomaly/addons/fdda-enhanced-animations-enhanced) by lizzardman
+- [FDDA Enhanced Animations - Medical / EXO](https://www.moddb.com/mods/stalker-anomaly/addons/fdda-enhanced-animations-medical-exo-anims) by Mirrowel
+- [FDDA Redone](https://www.moddb.com/mods/stalker-anomaly/addons/fdda-redone) by lizzardman (includes Animated Lead Box by leer_h)
+- [Item's Model Drop After Usage](https://www.moddb.com/mods/stalker-anomaly/addons/items-model-drop-after-usage) by Kutee and Purple
+
 **Audio**
 
 - [Dark Signal Amplified Soundscape](https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-soundscape) by Shr¡ke
@@ -102,6 +113,8 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Dynamic Anomalies Overhaul (DAO)](https://www.moddb.com/addons/dynamic-anomalies-overhaul-dao-read-description-please) by TheMrDemonized
 - [Hideout Furniture Expansion](https://www.moddb.com/mods/stalker-anomaly/addons/hideout-furniture-expansion) by maidresidence
 - [Hideout Furniture (HF)](https://www.moddb.com/addons/hideout-furniture-hf) by Aoldri
+- [Useful Idiots](https://www.moddb.com/mods/stalker-anomaly/addons/useful-idiots) by bellyillish
+- [Zone Customization Project (ZCP)](https://www.moddb.com/mods/stalker-anomaly/addons/survival-mode-remade-151) by Diphenhydramine-HCl
 
 **Base game and tools**
 
