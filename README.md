@@ -2,7 +2,7 @@
 
 A vanilla-plus mod setup for **S.T.A.L.K.E.R. Anomaly 1.5.3** with **xrRazom co-op**, packaged as an installer that rebuilds the exact same game on your PC.
 
-The installer does **not** contain any mods. It downloads every mod from its author's own ModDB / GitHub page and installs exactly the files, options and load order the pack uses, through a portable Mod Organizer 2 setup.
+The installer does **not** contain anyone else's mods. It downloads every mod from its author's own ModDB / GitHub page and installs exactly the files, options and load order the pack uses, through a portable Mod Organizer 2 setup. The only mod files inside Setup are the pack's own small fixes (see Credits).
 
 ## Download
 
@@ -55,8 +55,8 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 **Co-op**
 
 - [xrRazom: Stalker Anomaly Co-Op](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op) by xrRazom team
-- [Persistent Stalkers](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/persistent-stalkers) by xrRazom team (uploaded by MeeMaster)
-- [Master Core](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/master-core) by xrRazom team (uploaded by MeeMaster)
+- [Persistent Stalkers](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/persistent-stalkers) by MeeMaster
+- [Master Core](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/master-core) by MeeMaster
 
 **UI / HUD**
 
