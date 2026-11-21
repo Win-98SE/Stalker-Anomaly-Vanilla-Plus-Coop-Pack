@@ -134,6 +134,8 @@ WEAPONS / ANIMATIONS / SCOPES
     https://www.moddb.com/addons/parallax-reflex-sights
 - Mark Switch  by party_50
     https://www.moddb.com/mods/stalker-anomaly/addons/mark-switch
+- Better red dots for default weapons  by party_50
+    https://www.moddb.com/mods/stalker-anomaly/addons/better-red-dots-for-default-weapons
 - Thicc Russian Reticles  by Napolemon
     https://www.moddb.com/addons/thicc-russian-reticles
 - Vanilla Weapons Resmoothed & Relensed  by party_50

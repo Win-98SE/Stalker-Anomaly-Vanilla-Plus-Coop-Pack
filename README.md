@@ -51,6 +51,7 @@ The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. Y
 - **Read the source.** Everything Setup does is in this repo, as plain text:
   - [`SetupGui.cs`](SetupGui.cs) - the Setup window (C#). The `.exe` is compiled from this file.
   - [`Install-Modpack.ps1`](Install-Modpack.ps1) - the installer itself (PowerShell), which the window runs.
+  - [`Mraa3dssFix.cs`](Mraa3dssFix.cs) - the MRAA 3DSS Fix recipe the installer runs on your PC (C#).
   - [`Build-Modpack-Installer.ps1`](Build-Modpack-Installer.ps1) - how the pack owner builds the `.exe` from their own Mod Organizer setup, using the C# compiler that comes with Windows.
   - [`modpack-sources.csv`](modpack-sources.csv) - every download link Setup uses.
 - **Check the file is the original.** Each release lists the SHA-256 fingerprint of the `.exe`. In PowerShell, run `Get-FileHash .\Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe` and compare.
@@ -92,6 +93,7 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Shader 3D Scopes](https://www.moddb.com/mods/stalker-anomaly/addons/shader-3d-scopes) by party_50
 - [Parallax Reflex Sights](https://www.moddb.com/addons/parallax-reflex-sights) by party_50 (credits: LVutner)
 - [Mark Switch](https://www.moddb.com/mods/stalker-anomaly/addons/mark-switch) by party_50
+- [Better red dots for default weapons](https://www.moddb.com/mods/stalker-anomaly/addons/better-red-dots-for-default-weapons) by party_50
 - [Thicc Russian Reticles](https://www.moddb.com/addons/thicc-russian-reticles) by Napolemon
 - [Vanilla Weapons Resmoothed & Relensed](https://www.moddb.com/mods/stalker-anomaly/addons/vanilla-weapons-resmoothed-relensed) by party_50
 - [Procedural Movement Animations](https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-animations) by party_50
