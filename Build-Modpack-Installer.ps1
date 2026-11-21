@@ -19,7 +19,12 @@ param(
     [string]$GitHubRepo = 'Win-98SE/Stalker-Anomaly-Vanilla-Plus-Coop-Pack',  # Setup checks its latest release for updates
     # Mods made for this pack (no download exists) - their files ship inside Setup.
     # Anything NOT listed here that has no original archive still stops the build.
-    [string[]]$OwnMods = @('3DSS Blindsides AEK-971-1P29 Scope Fix')
+    [string[]]$OwnMods = @('ZCP Relations List Symbol Fix', 'Inventory Cell Crash Guard', 'MAS HD Icons Scope Fix', 'RE-Animate Sprint Fix', 'Ready Stances',
+                           'SR-3M Vikhr Unsuppressed Sound', 'CVFX Generators and Poltergeist Fix', 'posvoip STALKER adapter', 'MRAA 3DSS Fix',
+                           'xrr_gestures'),   # xrr_gestures by leer: only shared on the xrRazom Discord (links expire), so bundled with credit
+    # Pack mods whose model files are REBUILT on each friend's PC from other mods' files
+    # (Mraa3dssFix.cs) - only their configs ship; their gamedata\meshes files are checked by SHA-256.
+    [string[]]$GenMods = @('MRAA 3DSS Fix')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -232,6 +237,36 @@ function Find-Archive($name) {
     return $null
 }
 
+# The fix recipe runs here too, on your installed mods, and must rebuild your fix files
+# byte-for-byte - otherwise the build stops (friends would get something different).
+function Test-GenMod($name, $genFiles) {
+    $cs = Join-Path $Tools 'Mraa3dssFix.cs'
+    if (-not (Test-Path -LiteralPath $cs)) { throw "Mraa3dssFix.cs is missing next to this script (needed for '$name')." }
+    if (-not ('Mraa3dssFix' -as [type])) { Add-Type -Path $cs }
+    $tmp = Join-Path $env:TEMP 'AnomalyModpackGenTest'
+    if (Test-Path -LiteralPath $tmp) { Remove-Item -LiteralPath $tmp -Recurse -Force }
+    $glog = New-Object 'System.Collections.Generic.List[string]'
+    Say "      testing the fix recipe against your installed files..." 'DarkGray'
+    $made = [Mraa3dssFix]::Build((Join-Path $Root 'mods'), $tmp, $glog)
+    $want = @{}; foreach ($g in $genFiles) { $want[$g.path.ToLower()] = $g.sha256 }
+    $bad = New-Object System.Collections.Generic.List[string]
+    foreach ($rel in $made) {
+        $k = $rel.ToLower()
+        if (-not $want.ContainsKey($k)) { $bad.Add("extra: $rel"); continue }
+        $h = (Get-FileHash -LiteralPath (Join-Path $tmp $rel.Replace('/', '\')) -Algorithm SHA256).Hash
+        if ($h -ne $want[$k]) { $bad.Add("different: $rel") }
+        $want.Remove($k)
+    }
+    foreach ($k in $want.Keys) { $bad.Add("not rebuilt: $k") }
+    Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
+    if ($bad.Count -gt 0) {
+        $f = Join-Path $Tools 'gen-test-errors.txt'
+        [IO.File]::WriteAllLines($f, [string[]]$bad)
+        throw "'$name' recipe does not rebuild your files exactly ($($bad.Count) problem(s), see $f) - nothing was built."
+    }
+    Say "      recipe OK: all $($made.Count) model files rebuilt identical" 'DarkGray'
+}
+
 # ---------------------------------------------------------------- checks
 Say ''
 Say '=== Stalker Anomaly Vanilla+ Coop Pack: building the installer ===' 'Cyan'
@@ -310,16 +345,26 @@ foreach ($name in $enabled) {
     if ($OwnMods -contains $name) {
         # the pack's own mod: ship its files; the content hash goes into the recipe so
         # Setup reinstalls it on friends' PCs whenever these files change
+        $isGen = $GenMods -contains $name
+        $genFiles = New-Object System.Collections.Generic.List[object]
         $sb = New-Object System.Text.StringBuilder
         foreach ($f in @($files | Sort-Object Rel)) {
-            [void]$sb.Append($f.Rel).Append('=').Append((Get-FileHash -LiteralPath $f.Full -Algorithm SHA256).Hash).Append(';')
+            $h = (Get-FileHash -LiteralPath $f.Full -Algorithm SHA256).Hash
+            [void]$sb.Append($f.Rel).Append('=').Append($h).Append(';')
+            if ($isGen -and $f.Rel -like 'gamedata/meshes/*') { $genFiles.Add([ordered]@{ path = $f.Rel; sha256 = $h }); continue }
             Copy-ToOverlay $f.Full "mods/$name/$($f.Rel)"
         }
         $sha = [Security.Cryptography.SHA256]::Create()
         $own = [BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($sb.ToString()))).Replace('-', '')
         $item = [ordered]@{ name = $name; archive = $null; rules = @("own:$own"); hide = @() }
+        if ($isGen) {
+            Test-GenMod $name $genFiles
+            $item['gen'] = [ordered]@{ recipe = 'mraa3dss'; inputs = @('3DSS MRAA', 'MRAA 1.4 3DSS Meshes', 'MRAA 1.4.6'); files = $genFiles.ToArray() }
+            Say ("      pack's own mod - {0} config file(s) shipped, {1} model file(s) rebuilt on each PC" -f ($files.Count - $genFiles.Count), $genFiles.Count) 'DarkGray'
+        } else {
+            Say ("      pack's own mod - {0} file(s) shipped in Setup" -f $files.Count) 'DarkGray'
+        }
         [void]$mods.Add($item)
-        Say ("      pack's own mod - {0} file(s) shipped in Setup" -f $files.Count) 'DarkGray'
         continue
     }
     $arcPath = Find-Archive $instFile
@@ -418,6 +463,13 @@ if (Test-Path -LiteralPath $cmdLine) {
         Say "Launch options taken from commandline.txt: $opts" 'DarkGray'
     }
 }
+# posvoip voice chat (MPL-2.0, bundled with credit): the program folder goes into the game folder
+$posDir = Join-Path $Root 'posvoip'
+if (Test-Path -LiteralPath $posDir) {
+    $pc = 0
+    foreach ($f in (Get-RelFiles $posDir)) { Copy-ToOverlay $f.Full "root/posvoip/$($f.Rel)"; $pc++ }
+    Say "posvoip program: $pc file(s) bundled" 'DarkGray'
+} else { Note 'posvoip folder not found in the game folder - voice chat program NOT bundled' }
 foreach ($extra in @('portable.txt', 'categories.dat')) {
     $p = Join-Path $Root $extra
     if (Test-Path -LiteralPath $p) { Copy-ToOverlay $p $extra }
@@ -494,7 +546,7 @@ $manifest = [ordered]@{
 $json = $manifest | ConvertTo-Json -Depth 12
 [IO.File]::WriteAllText((Join-Path $Out 'modpack.json'), $json, (New-Object Text.UTF8Encoding $false))
 
-foreach ($f in @('Install-Modpack.ps1', 'Install Modpack.bat', 'README - Modpack Installer.txt')) {
+foreach ($f in @('Install-Modpack.ps1', 'Install Modpack.bat', 'README - Modpack Installer.txt', 'Mraa3dssFix.cs')) {
     $p = Join-Path $Tools $f
     if (Test-Path -LiteralPath $p) { Copy-Item -LiteralPath $p -Destination $Out }
     else { Note "$f not found next to this script - add it to the zip by hand" }

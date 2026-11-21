@@ -1,7 +1,7 @@
 match,url,note
 Persistent_stalkers,https://www.moddb.com/addons/start/319546,page: https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/persistent-stalkers
 Master_core,https://www.moddb.com/addons/start/321216,page: https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/master-core
-xrRazom,https://www.moddb.com/downloads/start/312787,page: https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/downloads/xrrazom-stalker-anomaly-co-op-10
+xrRazom,https://www.moddb.com/mods/stalker-anomaly/addons/xrrazom-stalker-anomaly-co-op-slim,Slim build (no MCM/FDDA/UA translation) - page: https://www.moddb.com/mods/stalker-anomaly/addons/xrrazom-stalker-anomaly-co-op-slim
 Dynamic_Anomalies_Overhaul,https://www.moddb.com/addons/start/231396,page: https://www.moddb.com/addons/dynamic-anomalies-overhaul-dao-read-description-please
 TBs_RF_Receiver,https://www.moddb.com/addons/start/215032,page: https://www.moddb.com/addons/tbs-rf-receiver-hidden-package-sidequests
 RF_Receiver_Tasks_QOL,https://www.moddb.com/addons/start/246367,page: https://www.moddb.com/addons/rf-receiver-tasks-qol-update
@@ -21,13 +21,10 @@ Dark_signal_item_pickup,https://www.moddb.com/addons/start/302239,page: https://
 Dark_signal_Amplified_footsteps,https://www.moddb.com/addons/start/301924,page: https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-footsteps-v5-extended
 JSRS_Port,https://www.moddb.com/addons/start/182695,page: https://www.moddb.com/mods/stalker-anomaly/addons/solarint-gunshot-overhaul
 Dark_Signal_Soundscape,https://www.moddb.com/addons/start/301869,page: https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-soundscape
-BlindsidesReanimationPackMilitary,https://www.moddb.com/addons/start/208349,page: https://www.moddb.com/mods/stalker-anomaly/addons/blindsides-weapon-reanimation-and-rebalance-military
 mark-switch,https://www.moddb.com/addons/start/265141,page: https://www.moddb.com/mods/stalker-anomaly/addons/mark-switch
 shader-3d-scopes,https://www.moddb.com/addons/start/266153,page: https://www.moddb.com/mods/stalker-anomaly/addons/shader-3d-scopes
 fixed-models,https://www.moddb.com/addons/start/263981,page: https://www.moddb.com/mods/stalker-anomaly/addons/vanilla-weapons-resmoothed-relensed
 Maids_Vanilla_HD_Icons,https://www.moddb.com/addons/start/223090,page: https://www.moddb.com/mods/stalker-anomaly/addons/maids-vanilla-hd-icons
-3DSS_Blindsides,https://www.moddb.com/addons/start/285456,page: https://www.moddb.com/mods/stalker-anomaly/addons/3dss-blindsides
-3DSS_Vanilla,https://www.moddb.com/addons/start/277030,page: https://www.moddb.com/mods/stalker-anomaly/addons/3d-shader-scopes-vanilla
 OldDog,https://www.moddb.com/addons/start/209829,page: https://www.moddb.com/mods/stalker-anomaly/addons/olddog
 HTS_bars,https://www.moddb.com/addons/start/214124,page: https://www.moddb.com/mods/stalker-anomaly/addons/hunger-thirst-sleepiness-bars
 1.2.2_Crooks,https://www.moddb.com/addons/start/223408,page: https://www.moddb.com/mods/stalker-anomaly/addons/crooks-faction-identification-ui
@@ -41,3 +38,14 @@ THAP_REWORK_2.3_REPAIRED_EXO,https://www.moddb.com/addons/start/274819,page: htt
 Item_Model_Drop,https://www.moddb.com/addons/start/293128,page: https://www.moddb.com/mods/stalker-anomaly/addons/items-model-drop-after-usage
 Useful_Idiots,https://www.moddb.com/addons/start/286903,page: https://www.moddb.com/mods/stalker-anomaly/addons/useful-idiots
 zone_customization_project,https://www.moddb.com/addons/start/213840,page: https://www.moddb.com/mods/stalker-anomaly/addons/survival-mode-remade-151
+MCM_,https://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu,page: https://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu
+modular-attachment-system,https://www.moddb.com/mods/stalker-anomaly/addons/modular-attachment-system,page: https://www.moddb.com/mods/stalker-anomaly/addons/modular-attachment-system
+procedural-movement-animations,https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-animations,page: https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-animations
+Procedural_Movement-ReAnimate,https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-reanimate,page: https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-reanimate
+THICC_RUSSIAN_RETICLES,https://www.moddb.com/addons/thicc-russian-reticles,page: https://www.moddb.com/addons/thicc-russian-reticles
+MRAA_v1.4.6,https://www.moddb.com/addons/start/276616,page: https://www.moddb.com/mods/stalker-anomaly/addons/masks-reanimated-anomaly-arsenal-v10
+3DSS_MRAA,https://www.moddb.com/addons/start/290144,page: https://www.moddb.com/mods/stalker-anomaly/addons/3dss-mraa
+MRAA_1_4_3DSS_Meshes,https://www.moddb.com/addons/start/299216,page: https://www.moddb.com/mods/stalker-anomaly/addons/mraa-14-3dss-meshes
+Backported_Obligatory_Objectively_Better_Systems,https://www.moddb.com/addons/start/292625,page: https://www.moddb.com/addons/boobs
+parallax-reflex-sights,https://www.moddb.com/addons/start/264986,page: https://www.moddb.com/addons/parallax-reflex-sights
+Cinematic_VFX,https://www.moddb.com/addons/start/208407,page: https://www.moddb.com/addons/cinemavfx3-7

@@ -104,6 +104,12 @@ $Texts = @{
     msg_unpacking   = @('unpacking...', 'розпакування...', 'распаковка...')
     msg_settings    = @("Game settings applied: the pack owner's settings ({0} lines)", 'Налаштування гри застосовано: налаштування автора збірки ({0} рядків)', 'Настройки игры применены: настройки автора сборки ({0} строк)')
     msg_target      = @('Installing into: {0}', 'Встановлення в: {0}', 'Установка в: {0}')
+    st_genfix       = @('Building the MRAA 3DSS Fix on this PC...', 'Створення MRAA 3DSS Fix на цьому ПК...', 'Создание MRAA 3DSS Fix на этом ПК...')
+    msg_genfix_ok   = @('MRAA 3DSS Fix built and checked ({0} files)', 'MRAA 3DSS Fix створено й перевірено (файлів: {0})', 'MRAA 3DSS Fix создан и проверен (файлов: {0})')
+    prob_genfix     = @('MRAA 3DSS Fix could not be applied, so it was turned off (MRAA guns keep their old reload/pose bugs). Everything else is installed. Send this log to the pack owner: {0}',
+                        'MRAA 3DSS Fix не вдалося застосувати, тому його вимкнено (у зброї MRAA лишаються старі помилки перезарядки/пози). Усе інше встановлено. Надішліть цей журнал автору збірки: {0}',
+                        'MRAA 3DSS Fix не удалось применить, поэтому он отключён (у оружия MRAA остаются старые ошибки перезарядки/позы). Всё остальное установлено. Отправьте этот журнал автору сборки: {0}')
+    msg_newgame     = @('IMPORTANT: this update changes weapons and scopes - start a NEW game (old saves can crash).', 'ВАЖЛИВО: це оновлення змінює зброю та приціли - почніть НОВУ гру (старі збереження можуть вилітати).', 'ВАЖНО: это обновление меняет оружие и прицелы - начните НОВУЮ игру (старые сохранения могут вылетать).')
 }
 function T($key) {
     $v = $Texts[$key]
@@ -746,11 +752,100 @@ if (Test-Path -LiteralPath $Overlay) {
     }
 }
 
+# ------------------------------------------------------------------ pack mods rebuilt on this PC
+# "MRAA 3DSS Fix": its model files are made here from 3DSS MRAA / MRAA 1.4 3DSS Meshes / MRAA 1.4.6
+# (nothing of those mods ships with the pack), then every file is checked against the pack
+# owner's SHA-256 list. If anything differs the fix is turned off, the rest of the install
+# carries on, and modpack_logs\mraa_fix_log.txt says why.
+$script:GenFailed = @{}
+foreach ($mod in @($m.mods)) {
+    if (-not $mod.gen) { continue }
+    $md = Join-Path $modsDir $mod.name
+    $logDir = Join-Path $Root 'modpack_logs'
+    $logPath = Join-Path $logDir 'mraa_fix_log.txt'
+    $glog = New-Object System.Collections.Generic.List[string]
+    $glog.Add("Stalker Anomaly Vanilla+ Coop Pack - $($mod.name) log")
+    $glog.Add("Run: $((Get-Date).ToString('yyyy-MM-dd HH:mm:ss'))   Pack built: $($m.created)   Folder: $Root")
+    $glog.Add("Windows: $([Environment]::OSVersion.VersionString)   PowerShell: $($PSVersionTable.PSVersion)")
+    $glog.Add('Input mods:')
+    foreach ($in in @($mod.gen.inputs)) {
+        $src = @($m.mods | Where-Object { $_.name -eq $in })[0]
+        $arc = if ($src) { $src.archive } else { $null }
+        $st = 'ok'
+        if (-not (Test-Path -LiteralPath (Join-Path $modsDir $in))) { $st = 'FOLDER MISSING' }
+        elseif ($arc -and $script:FailedArchives.Contains($arc)) { $st = 'NOT INSTALLED (download/unpack failed)' }
+        elseif ($arc -and $script:DiffArchives.Contains($arc)) { $st = 'DIFFERENT VERSION than the pack owner' }
+        $exp = if ($arc -and $archSha.ContainsKey($arc)) { $archSha[$arc] } else { '-' }
+        $glog.Add("  $in  <-  $arc  (expected sha256 $exp)  : $st")
+    }
+    $want = @{}
+    foreach ($g in @($mod.gen.files)) { $want[$g.path.ToLower()] = $g }
+    # already built and still matching? then nothing to do
+    $allGood = $true
+    foreach ($g in @($mod.gen.files)) {
+        $fp = Join-Path $md ($g.path.Replace('/', '\'))
+        if (-not (Test-Path -LiteralPath $fp) -or (Get-FileHash -LiteralPath $fp -Algorithm SHA256).Hash -ne $g.sha256) { $allGood = $false; break }
+    }
+    if ($allGood) { $glog.Add("All $($want.Count) files already present and correct - nothing rebuilt."); New-Item -ItemType Directory -Force -Path $logDir | Out-Null; [IO.File]::WriteAllLines($logPath, [string[]]$glog); continue }
+    Status (T 'st_genfix')
+    $tmpOut = Join-Path $Tmp 'genfix'
+    $ok = $false
+    try {
+        if (-not ('Mraa3dssFix' -as [type])) { Add-Type -Path (Join-Path $Pack 'Mraa3dssFix.cs') }
+        if (Test-Path -LiteralPath $tmpOut) { Remove-Item -LiteralPath $tmpOut -Recurse -Force }
+        $clog = New-Object 'System.Collections.Generic.List[string]'
+        $made = [Mraa3dssFix]::Build($modsDir, $tmpOut, $clog)
+        $bad = New-Object System.Collections.Generic.List[string]
+        $seen = @{}
+        foreach ($rel in $made) {
+            $k = $rel.ToLower(); $seen[$k] = $true
+            if (-not $want.ContainsKey($k)) { $bad.Add("EXTRA (not in the pack owner's list): $rel"); continue }
+            $h = (Get-FileHash -LiteralPath (Join-Path $tmpOut $rel.Replace('/', '\')) -Algorithm SHA256).Hash
+            if ($h -ne $want[$k].sha256) { $bad.Add("DIFFERENT: $rel  got $h  expected $($want[$k].sha256)") }
+        }
+        foreach ($k in $want.Keys) { if (-not $seen.ContainsKey($k)) { $bad.Add("NOT BUILT: $($want[$k].path)") } }
+        $glog.Add("Recipe wrote $($made.Count) file(s), expected $($want.Count).")
+        foreach ($c in $clog) { $glog.Add("  $c") }
+        if ($bad.Count -gt 0) {
+            $glog.Add("CHECK FAILED - $($bad.Count) problem(s):")
+            foreach ($b in $bad) { $glog.Add("  $b") }
+        } else {
+            $meshes = Join-Path $md 'gamedata\meshes'
+            if (Test-Path -LiteralPath $meshes) { Remove-Item -LiteralPath $meshes -Recurse -Force }
+            $baseLen = (Resolve-Path -LiteralPath $tmpOut).ProviderPath.TrimEnd('\').Length + 1
+            foreach ($f in (Get-ChildItem -LiteralPath $tmpOut -Recurse -File)) { Copy-File $f.FullName (Join-Path $md $f.FullName.Substring($baseLen)) $null }
+            $ok = $true
+            $glog.Add('CHECK PASSED - all files identical to the pack owner''s. Fix installed.')
+        }
+    } catch {
+        $glog.Add("ERROR: $($_.Exception.Message)")
+        try { $glog.Add("  at line $($_.InvocationInfo.ScriptLineNumber)") } catch { }
+    }
+    if (Test-Path -LiteralPath $tmpOut) { Remove-Item -LiteralPath $tmpOut -Recurse -Force -ErrorAction SilentlyContinue }
+    if ($ok) {
+        Say ('   ' + (T 'msg_genfix_ok' $want.Count)) 'DarkGray'
+    } else {
+        # leave nothing half-made: no models, and the mod switched off in the profile
+        $meshes = Join-Path $md 'gamedata\meshes'
+        if (Test-Path -LiteralPath $meshes) { Remove-Item -LiteralPath $meshes -Recurse -Force -ErrorAction SilentlyContinue }
+        $ml = Join-Path $Root "profiles\$($m.profile)\modlist.txt"
+        if (Test-Path -LiteralPath $ml) {
+            $lines = [IO.File]::ReadAllLines($ml) | ForEach-Object { if ($_ -ceq ('+' + $mod.name)) { '-' + $mod.name } else { $_ } }
+            [IO.File]::WriteAllLines($ml, [string[]]$lines)
+        }
+        $glog.Add("Result: $($mod.name) turned OFF in profile '$($m.profile)'. The rest of the pack is installed.")
+        $script:GenFailed[$mod.name] = $true
+        Problem (T 'prob_genfix' $logPath)
+    }
+    New-Item -ItemType Directory -Force -Path $logDir | Out-Null
+    [IO.File]::WriteAllLines($logPath, [string[]]$glog)
+}
+
 # ------------------------------------------------------------------ game settings
-# Same as typing "cfg_load Atmos_Neutral" in the console, then the pack owner's game settings
+# Same as typing "cfg_load Atmos_Summer" in the console, then the pack owner's game settings
 # (everything except keys, resolution/monitor, sound device, mouse and co-op name/host settings).
 $settingsLines = New-Object System.Collections.Generic.List[string]
-$atmos = Join-Path $modsDir 'Atmospherics Anomaly\appdata\Atmos_Neutral.ltx'
+$atmos = Join-Path $modsDir 'Atmospherics Anomaly\appdata\Atmos_Summer.ltx'
 if (Test-Path -LiteralPath $atmos) { foreach ($l in [IO.File]::ReadAllLines($atmos)) { if ($l.Trim()) { $settingsLines.Add($l.Trim()) } } }
 $packSettings = Join-Path $Overlay 'modpack_settings.ltx'
 if (Test-Path -LiteralPath $packSettings) { foreach ($l in [IO.File]::ReadAllLines($packSettings)) { if ($l.Trim()) { $settingsLines.Add($l.Trim()) } } }
@@ -790,6 +885,7 @@ if ($prev) {
 $recMods = New-Object System.Collections.Generic.List[object]
 foreach ($mod in @($m.mods)) {
     if ($mod.archive -and ($script:FailedArchives.Contains($mod.archive) -or $script:DiffArchives.Contains($mod.archive))) { continue }
+    if ($script:GenFailed.ContainsKey($mod.name)) { continue }
     $recMods.Add([pscustomobject]@{ name = $mod.name; sig = (Get-ModSig $mod) })
 }
 $record = [ordered]@{}
@@ -826,6 +922,26 @@ try {
     if (Test-Path -LiteralPath $icoDst) { $lnk.IconLocation = "$icoDst,0" }
     $lnk.Save()
 } catch { }
+# second shortcut: posvoip voice chat (start it before MO2 / the game)
+try {
+    $posExe = Join-Path $Root 'posvoip\posvoip.exe'
+    if (Test-Path -LiteralPath $posExe) {
+        $ws = New-Object -ComObject WScript.Shell
+        $desk = [Environment]::GetFolderPath('Desktop')
+        $vPath = Join-Path $desk 'posvoip (Coop Voice).lnk'
+        if (Test-Path -LiteralPath $vPath) {
+            $old = $ws.CreateShortcut($vPath).TargetPath
+            if ($old -and ($old -ine $posExe)) { $vPath = Join-Path $desk ('posvoip (Coop Voice) (' + (Split-Path -Leaf $Root) + ').lnk') }
+        }
+        $v = $ws.CreateShortcut($vPath)
+        $v.TargetPath = $posExe
+        $v.WorkingDirectory = Join-Path $Root 'posvoip'
+        $v.Description = 'posvoip proximity voice chat for the Vanilla+ Coop Pack - start this, then the pack'
+        $vIco = Join-Path $Root 'posvoip\posvoip_voice.ico'
+        if (Test-Path -LiteralPath $vIco) { $v.IconLocation = "$vIco,0" }
+        $v.Save()
+    }
+} catch { }
 
 Say ''
 if ($Problems.Count -eq 0) {
@@ -836,6 +952,8 @@ if ($Problems.Count -eq 0) {
     foreach ($p in $Problems) { Say " - $p" 'Yellow' }
     Say (T 'msg_retry') 'Yellow'
 }
+if ($prev) { Say (T 'msg_newgame') 'Yellow' }
+Say 'Voice chat: start "posvoip (Coop Voice)" on your desktop first, then the pack.' 'Green'
 Say 'First launch steps are in "README - Modpack Installer.txt".'
 if ($Gui) {
     $readme = Join-Path $Pack 'README - Modpack Installer.txt'

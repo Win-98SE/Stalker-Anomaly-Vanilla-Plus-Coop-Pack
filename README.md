@@ -2,7 +2,7 @@
 
 A vanilla-plus mod setup for **S.T.A.L.K.E.R. Anomaly 1.5.3** with **xrRazom co-op**, packaged as an installer that rebuilds the exact same game on your PC.
 
-The installer does **not** contain anyone else's mods. It downloads every mod from its author's own ModDB / GitHub page and installs exactly the files, options and load order the pack uses, through a portable Mod Organizer 2 setup. The only mod files inside Setup are the pack's own small fixes (see Credits).
+The installer does **not** contain anyone else's mods. It downloads every mod from its author's own ModDB / GitHub page and installs exactly the files, options and load order the pack uses, through a portable Mod Organizer 2 setup. The only files inside Setup are the pack's own small fixes and the posvoip voice chat program (open source, MPL-2.0; see Credits).
 
 ## Download
 
@@ -18,6 +18,8 @@ You need Windows 10/11 and about 25 GB of free space (about 55 GB if Setup also 
 4. Wait. If ModDB blocks a download, its page opens in your browser and the download starts by itself; Setup notices the finished file.
 5. Press **Launch Mod Organizer**, pick *Anomaly (DX11-AVX)* and press Run.
 
+Setup puts two shortcuts on your desktop: **Stalker Anomaly Vanilla+ Coop Pack** (Mod Organizer 2) and **posvoip (Coop Voice)**.
+
 Setup speaks **English, Ukrainian and Russian** (you pick on the first screen).
 
 ## Updating
@@ -28,6 +30,20 @@ Full instructions and troubleshooting are in `README - Modpack Installer.txt`, w
 
 > Everyone playing together must use the **same release**: co-op needs identical files on every PC.
 
+> **Start a new game after updating to this release.** It replaces the weapon pack (Blindside's -> MRAA) and changes how scopes attach; old saves can crash.
+
+## Voice chat (posvoip)
+
+The pack includes [posvoip](https://gitlab.com/darklight-outpost/posvoip/-/releases), proximity voice chat for xrRazom: you hear friends from where their character stands.
+
+1. Start **posvoip (Coop Voice)** from your desktop **first**, then the pack (Mod Organizer 2) and the game.
+2. Connect with a **code** (easiest - no router setup) or by **IP**: in IP mode only the host forwards **UDP port 49500**, and everyone else enters the host's IP.
+3. Push-to-talk and radio keys are in the game's **MCM** menu (posvoip).
+
+## Seasons
+
+The pack ships C Consciousness Grass & Trees as **spring** with Atmospherics **summer** weather (Setup applies `cfg_load Atmos_Summer`). Other seasons/presets are a personal choice; for co-op everyone should use the same CCon season.
+
 ## Is it safe?
 
 The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. You don't have to take it on trust - you can check it yourself:
@@ -35,6 +51,7 @@ The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. Y
 - **Read the source.** Everything Setup does is in this repo, as plain text:
   - [`SetupGui.cs`](SetupGui.cs) - the Setup window (C#). The `.exe` is compiled from this file.
   - [`Install-Modpack.ps1`](Install-Modpack.ps1) - the installer itself (PowerShell), which the window runs.
+  - [`Mraa3dssFix.cs`](Mraa3dssFix.cs) - the MRAA 3DSS Fix recipe the installer runs on your PC (C#).
   - [`Build-Modpack-Installer.ps1`](Build-Modpack-Installer.ps1) - how the pack owner builds the `.exe` from their own Mod Organizer setup, using the C# compiler that comes with Windows.
   - [`modpack-sources.csv`](modpack-sources.csv) - every download link Setup uses.
 - **Check the file is the original.** Each release lists the SHA-256 fingerprint of the `.exe`. In PowerShell, run `Get-FileHash .\Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe` and compare.
@@ -43,7 +60,7 @@ The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. Y
 ### What Setup does on your PC
 
 - Downloads only from the mod pages listed under Credits, plus S.T.A.L.K.E.R. Anomaly (ModDB), Mod Organizer 2 (GitHub) and 7-Zip (7-zip.org) if you don't have them.
-- Writes only to the folder you choose, a desktop shortcut, and a temporary folder that it deletes when it closes.
+- Writes only to the folder you choose, two desktop shortcuts, and a temporary folder that it deletes when it closes.
 - Doesn't need administrator rights (unless you pick a folder inside Program Files).
 - Sends nothing about you anywhere. Its only other connection is one check with GitHub for a newer release of this pack.
 
@@ -57,6 +74,7 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [xrRazom: Stalker Anomaly Co-Op](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op) by xrRazom team
 - [Persistent Stalkers](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/persistent-stalkers) by MeeMaster
 - [Master Core](https://www.moddb.com/mods/xrrazom-stalker-anomaly-co-op/addons/master-core) by MeeMaster
+- xrr_gestures 1.2.1 by leer (xrRazom Discord) - only shared on Discord, so it ships inside Setup unchanged, with credit.
 
 **UI / HUD**
 
@@ -65,15 +83,23 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Crook's Faction Identification UI](https://www.moddb.com/mods/stalker-anomaly/addons/crooks-faction-identification-ui) by Crook (uploaded by Grokitach)
 - [O.L.D. D.O.G. HUD](https://www.moddb.com/mods/stalker-anomaly/addons/olddog) by Strogglet15
 
-**Weapons / Animations**
+**Weapons / Animations / Scopes**
 
-- [3D Shader Scopes - Blindside's](https://www.moddb.com/mods/stalker-anomaly/addons/3dss-blindsides) by MsPizza727
-- [3D Shader Scopes - Vanilla](https://www.moddb.com/mods/stalker-anomaly/addons/3d-shader-scopes-vanilla) by MsPizza727
+- [Mask's Reanimated Anomaly Arsenal (MRAA) 1.4.6](https://www.moddb.com/mods/stalker-anomaly/addons/masks-reanimated-anomaly-arsenal-v10) by Mask961 (credits: Party_50, BarryBogs, JadeyM, Von Avalon, Aoldri, Utjan, FIREBREATH1001, BixFeo, TAZ team)
+- [3D Shader Sights MRAA](https://www.moddb.com/mods/stalker-anomaly/addons/3dss-mraa) by MsPizza727 (credits: Party_50, Mask961)
+- [MRAA 1.4 meshes for 3DSS MRAA](https://www.moddb.com/mods/stalker-anomaly/addons/mraa-14-3dss-meshes) by _Zazquatch_ (credits: MsPizza727, Party_50, Mask961)
+- [Backported Obligatory Objectively Better Systems (BOOBS)](https://www.moddb.com/addons/boobs) by MsPizza727 (credits: Party_50)
+- [Modular Attachment System](https://www.moddb.com/mods/stalker-anomaly/addons/modular-attachment-system) by party_50
 - [Shader 3D Scopes](https://www.moddb.com/mods/stalker-anomaly/addons/shader-3d-scopes) by party_50
+- [Parallax Reflex Sights](https://www.moddb.com/addons/parallax-reflex-sights) by party_50 (credits: LVutner)
 - [Mark Switch](https://www.moddb.com/mods/stalker-anomaly/addons/mark-switch) by party_50
-- [Blindside's Weapon Reanimation - Military](https://www.moddb.com/mods/stalker-anomaly/addons/blindsides-weapon-reanimation-and-rebalance-military) by Blindxside
+- [Thicc Russian Reticles](https://www.moddb.com/addons/thicc-russian-reticles) by Napolemon
 - [Vanilla Weapons Resmoothed & Relensed](https://www.moddb.com/mods/stalker-anomaly/addons/vanilla-weapons-resmoothed-relensed) by party_50
-- 3DSS Blindsides AEK-971-1P29 Scope Fix - made for this pack. Adds the AEK-971 + 1P29 aim position that 3DSS Blindside's is missing. Its one small file ships inside Setup.
+- [Procedural Movement Animations](https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-animations) by party_50
+- [Procedural Movement RE/Animate](https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-reanimate) by Haxoo
+- MRAA 3DSS Fix - made for this pack. 3DSS MRAA and the MRAA 1.4 3DSS meshes were made for MRAA 1.3; this points their weapon models at MRAA 1.4.6's animations, resizes the P90 to match MRAA 1.4.6, and fixes the P90 and Type 63 sight positions. **None of those mods' files ship with Setup**: Setup rebuilds the fixed models on your PC from the mods it downloaded and checks every file against the pack owner's (if the check fails, the fix is switched off and a log is written to `modpack_logs\mraa_fix_log.txt`).
+- SR-3M Vikhr Unsuppressed Sound - made for this pack. The Vikhr without a suppressor uses the OTS-14 Groza's unsuppressed shot. Ships inside Setup.
+- MAS HD Icons Scope Fix, Ready Stances, RE-Animate Sprint Fix - made for this pack. Ship inside Setup.
 
 **Hands / Item Animations**
 
@@ -86,12 +112,21 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [FDDA Redone](https://www.moddb.com/mods/stalker-anomaly/addons/fdda-redone) by lizzardman (includes Animated Lead Box by leer_h)
 - [Item's Model Drop After Usage](https://www.moddb.com/mods/stalker-anomaly/addons/items-model-drop-after-usage) by Kutee and Purple
 
+**Voice chat**
+
+- [posvoip](https://gitlab.com/darklight-outpost/posvoip/-/releases) and its STALKER adapter by darklight-outpost - open source under the Mozilla Public License 2.0 (license included). Bundled in Setup unchanged.
+
 **Audio**
 
 - [Dark Signal Amplified Soundscape](https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-soundscape) by Shr¡ke
 - [JSRS Sound Mod (port)](https://www.moddb.com/mods/stalker-anomaly/addons/solarint-gunshot-overhaul) by Solarint
 - [Dark Signal Amplified Footsteps v5 Extended](https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-footsteps-v5-extended) by Shr¡ke
 - [Dark Signal Amplified Item and UI Soundpack](https://www.moddb.com/mods/stalker-anomaly/addons/dark-signal-amplified-item-and-ui-soundpack) by Shr¡ke
+
+**Effects**
+
+- ["Cinematic VFX" Particle Effects Addon 3.7](https://www.moddb.com/addons/cinemavfx3-7) by jdud
+- CVFX 3.7 Generators and Poltergeist Fix - made for this pack, based on helloworlder's CVFX generators crash / poltergeist fix. Ships inside Setup.
 
 **Graphics**
 
@@ -115,10 +150,13 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Hideout Furniture (HF)](https://www.moddb.com/addons/hideout-furniture-hf) by Aoldri
 - [Useful Idiots](https://www.moddb.com/mods/stalker-anomaly/addons/useful-idiots) by bellyillish
 - [Zone Customization Project (ZCP)](https://www.moddb.com/mods/stalker-anomaly/addons/survival-mode-remade-151) by Diphenhydramine-HCl
+- ZCP Relations List Symbol Fix - made for this pack. Fixes the "nїS" shown before each faction in the new-game Relations list with ZCP. Ships inside Setup.
+- Inventory Cell Crash Guard - made for this pack. Stops a crash in Anomaly's item grid (utils_ui.script line 1226) when an item has no inventory icon size, e.g. switching debug spawner categories. Ships inside Setup.
 
 **Base game and tools**
 
 - [S.T.A.L.K.E.R. Anomaly](https://www.moddb.com/mods/stalker-anomaly) by the Anomaly Developers
 - [Mod Organizer 2](https://github.com/ModOrganizer2/modorganizer)
+- [Anomaly Mod Configuration Menu (MCM)](https://www.moddb.com/mods/stalker-anomaly/addons/anomaly-mod-configuration-menu) by RavenAscendant
 
 Please don't re-upload the mods themselves.
