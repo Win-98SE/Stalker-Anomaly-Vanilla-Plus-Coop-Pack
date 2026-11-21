@@ -148,7 +148,8 @@ WEAPONS / ANIMATIONS / SCOPES
     on your PC from those mods - none of their files ship with Setup.
 - SR-3M Vikhr Unsuppressed Sound  - made for this pack
     The Vikhr without a suppressor uses the OTS-14 Groza's shot sound.
-- MAS HD Icons Scope Fix, Ready Stances  - made for this pack
+- MAS HD Icons Scope Fix, Ready Stances, RE-Animate Sprint Fix
+  - made for this pack
 
 HANDS / ITEM ANIMATIONS
 - T.H.A.P. Rework  by IENCE (based on T.H.A.P. by ICHICROW)
