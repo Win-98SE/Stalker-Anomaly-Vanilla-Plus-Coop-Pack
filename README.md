@@ -51,7 +51,6 @@ The Setup `.exe` isn't code-signed, so Windows shows a warning the first time. Y
 - **Read the source.** Everything Setup does is in this repo, as plain text:
   - [`SetupGui.cs`](SetupGui.cs) - the Setup window (C#). The `.exe` is compiled from this file.
   - [`Install-Modpack.ps1`](Install-Modpack.ps1) - the installer itself (PowerShell), which the window runs.
-  - [`Mraa3dssFix.cs`](Mraa3dssFix.cs) - the MRAA 3DSS Fix recipe the installer runs on your PC (C#).
   - [`Build-Modpack-Installer.ps1`](Build-Modpack-Installer.ps1) - how the pack owner builds the `.exe` from their own Mod Organizer setup, using the C# compiler that comes with Windows.
   - [`modpack-sources.csv`](modpack-sources.csv) - every download link Setup uses.
 - **Check the file is the original.** Each release lists the SHA-256 fingerprint of the `.exe`. In PowerShell, run `Get-FileHash .\Stalker_Anomaly_VanillaPlus_Coop_Pack_Setup_<date>.exe` and compare.
