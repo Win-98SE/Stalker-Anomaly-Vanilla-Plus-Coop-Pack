@@ -21,7 +21,7 @@ param(
     # Anything NOT listed here that has no original archive still stops the build.
     [string[]]$OwnMods = @('ZCP Relations List Symbol Fix', 'Inventory Cell Crash Guard', 'MAS HD Icons Scope Fix', 'RE-Animate Sprint Fix', 'Ready Stances',
                            'SR-3M Vikhr Unsuppressed Sound', 'CVFX Generators and Poltergeist Fix', 'posvoip STALKER adapter', 'MRAA 3DSS Fix',
-                           'xrr_gestures'),   # xrr_gestures by leer: only shared on the xrRazom Discord (links expire), so bundled with credit
+                           'xrr_gestures', 'THAP Repaired EXO Duty Fix'),   # xrr_gestures by leer: only shared on the xrRazom Discord (links expire), so bundled with credit
     # Pack mods whose model files are REBUILT on each friend's PC from other mods' files
     # (Mraa3dssFix.cs) - only their configs ship; their gamedata\meshes files are checked by SHA-256.
     [string[]]$GenMods = @('MRAA 3DSS Fix')

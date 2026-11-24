@@ -158,6 +158,9 @@ HANDS / ITEM ANIMATIONS
     https://www.moddb.com/mods/stalker-anomaly/addons/thap-rework
 - T.H.A.P. Rework Repaired EXO  by Makrent
     https://www.moddb.com/mods/stalker-anomaly/addons/thap-rework-repaired-exo
+- THAP Repaired EXO Duty Fix  - made for this pack
+    Fixes the crash when wearing the Duty Nosorog exo (it pointed at a hands
+    model that doesn't exist).
 - Food, Drug and Drinks Animations (FDDA)  by Feel_Fried
     https://www.moddb.com/mods/stalker-anomaly/addons/food-drug-and-drinks-animations-reuploaded
 - FDDA Enhanced Animations - Food and Drinks  by Mirrowel

@@ -99,6 +99,7 @@ All mods belong to their authors. Please visit their pages, endorse them and lea
 - [Procedural Movement Animations](https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-animations) by party_50
 - [Procedural Movement RE/Animate](https://www.moddb.com/mods/stalker-anomaly/addons/procedural-movement-reanimate) by Haxoo
 - MRAA 3DSS Fix - made for this pack. 3DSS MRAA and the MRAA 1.4 3DSS meshes were made for MRAA 1.3; this points their weapon models at MRAA 1.4.6's animations, resizes the P90 to match MRAA 1.4.6, and fixes the P90 and Type 63 sight positions. **None of those mods' files ship with Setup**: Setup rebuilds the fixed models on your PC from the mods it downloaded and checks every file against the pack owner's (if the check fails, the fix is switched off and a log is written to `modpack_logs\mraa_fix_log.txt`).
+- THAP Repaired EXO Duty Fix - made for this pack. Fixes the crash when wearing the Duty Nosorog exo: T.H.A.P. Rework Repaired EXO points it at a hands model (`actor_hud_duty_exo`) that doesn't exist; this points it at T.H.A.P.'s Duty exo hands. Ships inside Setup.
 - SR-3M Vikhr Unsuppressed Sound - made for this pack. The Vikhr without a suppressor uses the OTS-14 Groza's unsuppressed shot. Ships inside Setup.
 - MAS HD Icons Scope Fix, Ready Stances, RE-Animate Sprint Fix - made for this pack. Ship inside Setup.
 
